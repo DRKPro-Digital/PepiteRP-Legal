@@ -1,0 +1,760 @@
+<title>PépiteRP — Documents Légaux</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --bg:        #F4F6FA;
+    --surface:   #FFFFFF;
+    --border:    #E2E8F0;
+    --text:      #0F172A;
+    --muted:     #64748B;
+    --accent:    #1D4ED8;
+    --accent-bg: #EFF6FF;
+    --danger:    #DC2626;
+    --nav-bg:    #FFFFFF;
+    --shadow:    0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:        #0B1120;
+      --surface:   #141E30;
+      --border:    #1E2D45;
+      --text:      #F0F4FF;
+      --muted:     #8FA3BC;
+      --accent:    #3B82F6;
+      --accent-bg: #1E2D45;
+      --danger:    #F87171;
+      --nav-bg:    #141E30;
+      --shadow:    0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:        #0B1120;
+    --surface:   #141E30;
+    --border:    #1E2D45;
+    --text:      #F0F4FF;
+    --muted:     #8FA3BC;
+    --accent:    #3B82F6;
+    --accent-bg: #1E2D45;
+    --danger:    #F87171;
+    --nav-bg:    #141E30;
+    --shadow:    0 1px 3px rgba(0,0,0,.4);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+  }
+
+  /* ── NAV ── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .nav-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .brand {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    padding: 16px 0;
+    margin-right: 16px;
+    white-space: nowrap;
+    letter-spacing: -0.01em;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 18px 14px 16px;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ── CONTENT ── */
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  .doc { display: none; }
+  .doc.active { display: block; }
+
+  .doc-header {
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .doc-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .doc-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    text-wrap: balance;
+    margin-bottom: 14px;
+  }
+  .doc-meta {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .notice {
+    background: var(--accent-bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: var(--text);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+  .notice.warn {
+    border-left-color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 8%, var(--bg));
+  }
+
+  /* ── ACCORDION ── */
+  .article {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .article summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    user-select: none;
+  }
+  .article summary::-webkit-details-marker { display: none; }
+  .article-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    color: var(--accent);
+    background: var(--accent-bg);
+    border-radius: 4px;
+    padding: 3px 7px;
+    flex-shrink: 0;
+  }
+  .article-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+  .article-chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform .2s;
+    flex-shrink: 0;
+  }
+  .article[open] .article-chevron { transform: rotate(180deg); }
+  .article[open] summary { border-bottom: 1px solid var(--border); }
+
+  .article-body {
+    padding: 20px 20px 20px 20px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text);
+  }
+  .article-body p { margin-bottom: 12px; }
+  .article-body p:last-child { margin-bottom: 0; }
+  .article-body ul, .article-body ol {
+    padding-left: 20px;
+    margin: 10px 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .article-body strong { font-weight: 600; }
+  .article-body .highlight {
+    background: var(--accent-bg);
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 13.5px;
+    border-left: 2px solid var(--accent);
+  }
+  .article-body .warn-block {
+    background: color-mix(in srgb, var(--danger) 8%, var(--bg));
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 13.5px;
+    border-left: 2px solid var(--danger);
+    color: var(--danger);
+    font-weight: 500;
+  }
+  .contact-link { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .contact-link:hover { text-decoration: underline; }
+
+  @media (max-width: 560px) {
+    .tab-btn { padding: 18px 10px 16px; font-size: 12px; }
+    .brand { font-size: 13px; margin-right: 8px; }
+    .doc-title { font-size: 22px; }
+  }
+</style>
+
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <span class="brand">PépiteRP</span>
+    <button class="tab-btn active" onclick="showDoc('cgu', this)">CGU / CGV</button>
+    <button class="tab-btn" onclick="showDoc('privacy', this)">Confidentialité</button>
+    <button class="tab-btn" onclick="showDoc('partner', this)">Partenaires</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- ══════════════════════════════
+       DOC 1 — CGU / CGV
+  ══════════════════════════════ -->
+  <div class="doc active" id="doc-cgu">
+    <div class="doc-header">
+      <div class="doc-label">Document légal</div>
+      <h1 class="doc-title">Conditions Générales d'Utilisation et de Vente</h1>
+      <div class="doc-meta">
+        <span>Version 2.0</span>
+        <span>En vigueur depuis le 1er septembre 2026</span>
+        <span>Service : PépiteRP</span>
+      </div>
+    </div>
+
+    <div class="notice warn">
+      <strong>Réservé aux personnes majeures (18+).</strong> L'accès au Service est strictement conditionné à la majorité légale. Toute tentative d'accès par un mineur entraîne la suspension immédiate du compte.
+    </div>
+
+    <details class="article" open>
+      <summary>
+        <span class="article-num">ART. 1</span>
+        <span class="article-title">Objet et champ d'application</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Les présentes Conditions Générales d'Utilisation et de Vente (ci-après « CGU/CGV ») régissent l'accès et l'utilisation du service PépiteRP (ci-après « le Service »), accessible via la plateforme Telegram.</p>
+        <p>Le Service est édité et exploité par PépiteRP (ci-après « l'Éditeur »), joignable à l'adresse : <a href="mailto:drkpro.contact@gmail.com" class="contact-link">drkpro.contact@gmail.com</a></p>
+        <p>Toute utilisation du Service implique l'acceptation pleine et entière des présentes CGU/CGV. L'Éditeur se réserve le droit de les modifier à tout moment ; les modifications entrent en vigueur dès leur publication.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 2</span>
+        <span class="article-title">Accès au Service — Conditions d'âge</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p><strong>L'accès au Service est réservé aux personnes âgées de 18 ans ou plus.</strong></p>
+        <p>En acceptant les présentes CGU/CGV, l'Utilisateur déclare sur l'honneur :</p>
+        <ul>
+          <li>être âgé de 18 ans ou plus ;</li>
+          <li>que l'acceptation vaut signature numérique au sens de l'article 1366 du Code civil ;</li>
+          <li>ne pas utiliser le Service depuis un lieu où ce type de service est légalement interdit.</li>
+        </ul>
+        <p>L'Éditeur ne saurait être tenu responsable en cas de fausse déclaration de l'Utilisateur quant à son âge. Toute déclaration mensongère engage la seule responsabilité de l'Utilisateur.</p>
+        <div class="warn-block">Tout accès constaté d'un mineur entraîne la suspension immédiate du compte et un signalement aux autorités compétentes.</div>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 3</span>
+        <span class="article-title">Description du Service et nature de l'IA</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>PépiteRP est un service de roleplay interactif fonctionnant via des bots Telegram. Il propose notamment :</p>
+        <ul>
+          <li>des conversations de roleplay textuelles générées par intelligence artificielle ;</li>
+          <li>des réponses vocales synthétisées (bot vocal) ;</li>
+          <li>des scénarios personnalisables entre personnages fictifs.</li>
+        </ul>
+        <div class="highlight">
+          <strong>Clause de personnages fictifs :</strong> Tous les personnages présents sur le Service sont <strong>entièrement fictifs</strong> et déclarés <strong>majeurs (18 ans ou plus)</strong>. Toute ressemblance avec des personnes réelles, vivantes ou décédées, est purement fortuite. Aucun contenu ne met en scène de personnes réelles identifiables.
+        </div>
+        <p><strong>L'IA n'est pas une personne réelle.</strong> Les réponses générées sont produites par des technologies d'intelligence artificielle tierces. Elles ne constituent pas une relation humaine, affective, médicale ou professionnelle de quelque nature que ce soit. L'Éditeur décline toute responsabilité quant aux attentes émotionnelles ou relationnelles de l'Utilisateur.</p>
+        <p>Le contenu généré est à vocation de divertissement.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 4</span>
+        <span class="article-title">Inscription et compte Utilisateur</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>L'accès au Service s'effectue via la plateforme Telegram. L'Utilisateur est identifié par son identifiant Telegram (user_id), qui constitue son compte sur le Service.</p>
+        <p>L'Utilisateur est seul responsable de la confidentialité et de la sécurité de son compte Telegram. L'Éditeur ne saurait être tenu responsable de tout accès non autorisé résultant d'une négligence de l'Utilisateur.</p>
+        <p>L'Utilisateur s'engage à utiliser le Service pour son usage personnel et exclusif. La cession, le prêt ou le partage de l'accès à un tiers est interdit.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 5</span>
+        <span class="article-title">Prix, paiement et crédits</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>L'accès à certaines fonctionnalités du Service est conditionné à l'acquisition de crédits ou à la souscription d'un abonnement, selon les modalités suivantes :</p>
+        <ul>
+          <li><strong>Paiement par carte bancaire</strong> : traité par Stripe, Inc. (États-Unis). Les abonnements se renouvellent automatiquement sauf résiliation avant la date d'échéance.</li>
+          <li><strong>Paiement en Telegram Stars</strong> : packs de crédits achetés via le système de paiement intégré de Telegram.</li>
+        </ul>
+        <p>Les prix sont affichés toutes taxes comprises (TTC) sur le Service. L'Éditeur se réserve le droit de modifier ses tarifs à tout moment, sans que cela affecte les crédits déjà acquis.</p>
+        <p>Les crédits sont utilisables uniquement sur le Service PépiteRP et sont nominatifs : ils ne peuvent être transférés, revendus ni échangés.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 6</span>
+        <span class="article-title">Droit de rétractation et remboursements</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Conformément à l'article L221-28 du Code de la consommation, <strong>le droit de rétractation ne s'applique pas</strong> aux contenus numériques dont l'exécution a commencé avec l'accord exprès de l'Utilisateur, qui a renoncé à son droit de rétractation.</p>
+        <p>En validant l'achat et en commençant à utiliser les crédits, l'Utilisateur reconnaît expressément renoncer à son droit de rétractation pour les contenus numériques immédiatement disponibles.</p>
+        <div class="highlight">
+          <strong>Aucun remboursement</strong> ne pourra être accordé pour des crédits partiellement ou totalement consommés.
+        </div>
+        <p>Pour les abonnements avec renouvellement automatique, l'Utilisateur peut résilier à tout moment via son interface Stripe. L'abonnement reste actif jusqu'à la fin de la période en cours.</p>
+        <p>En cas de dysfonctionnement technique avéré imputable à l'Éditeur, un avoir en crédits pourra être accordé à titre commercial, à la discrétion de l'Éditeur.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 7</span>
+        <span class="article-title">Contenus interdits et obligations de l'Utilisateur</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>L'Utilisateur s'engage à ne pas utiliser le Service pour produire, solliciter ou diffuser des contenus :</p>
+        <ul>
+          <li>impliquant ou évoquant des mineurs dans un contexte sexuel ;</li>
+          <li>représentant ou simulant des actes de violence non consentie réelle ;</li>
+          <li>contenant des informations personnelles réelles identifiables de tiers ;</li>
+          <li>constituant du harcèlement, de la menace ou de l'incitation à la haine ;</li>
+          <li>visant à contourner les systèmes de modération du Service ;</li>
+          <li>à des fins commerciales non autorisées (revente d'accès, génération de contenu pour des tiers, etc.).</li>
+        </ul>
+        <div class="warn-block">Toute tentative de produire des contenus impliquant des mineurs constitue une infraction pénale grave. L'Éditeur procède à un ban permanent immédiat et à un signalement aux autorités.</div>
+        <p>L'Éditeur dispose de systèmes de modération automatique actifs en temps réel. Ces systèmes peuvent bloquer certains contenus sans préavis.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 8</span>
+        <span class="article-title">Sanctions, suspension et résiliation</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>L'Éditeur se réserve le droit de suspendre ou de résilier l'accès de tout Utilisateur, sans préavis ni remboursement, en cas de :</p>
+        <ul>
+          <li>violation des présentes CGU/CGV ;</li>
+          <li>tentative de contournement des systèmes de sécurité ;</li>
+          <li>comportement frauduleux (fausse déclaration d'âge, chargeback abusif) ;</li>
+          <li>production de contenus illégaux.</li>
+        </ul>
+        <p>Les crédits non consommés ne donnent lieu à aucun remboursement en cas de suspension pour faute.</p>
+        <p>L'Utilisateur peut clôturer son compte à tout moment en contactant l'Éditeur à <a href="mailto:drkpro.contact@gmail.com" class="contact-link">drkpro.contact@gmail.com</a>. La clôture entraîne la suppression de l'historique de conversation dans un délai de 30 jours.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 9</span>
+        <span class="article-title">Responsabilité et limitation de garantie</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Le Service est fourni « en l'état ». L'Éditeur ne garantit pas :</p>
+        <ul>
+          <li>l'exactitude, la pertinence ou la qualité des contenus générés par l'IA ;</li>
+          <li>la continuité du Service ni l'absence d'interruptions techniques ;</li>
+          <li>la compatibilité du Service avec tous les appareils ou configurations.</li>
+        </ul>
+        <p>L'Éditeur ne saurait être tenu responsable des dommages indirects résultant de l'utilisation ou de l'impossibilité d'utiliser le Service (perte de données, préjudice commercial, etc.).</p>
+        <p>La responsabilité totale de l'Éditeur, pour quelque cause que ce soit, est limitée au montant effectivement payé par l'Utilisateur au cours des 3 derniers mois précédant le dommage allégué.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 10</span>
+        <span class="article-title">Propriété intellectuelle</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>L'ensemble des éléments constituant le Service (bots, prompts, interfaces, marque PépiteRP) sont la propriété exclusive de l'Éditeur et sont protégés par le droit d'auteur et les droits voisins.</p>
+        <p>Les contenus générés par l'IA à la demande de l'Utilisateur sont produits à des fins d'usage personnel uniquement. L'Utilisateur ne peut pas les reproduire, diffuser, vendre ou exploiter commercialement sans autorisation écrite préalable de l'Éditeur.</p>
+        <p>L'Utilisateur cède à l'Éditeur, à titre gratuit et non exclusif, le droit d'utiliser les données anonymisées issues des interactions afin d'améliorer le Service.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 11</span>
+        <span class="article-title">Loi applicable et juridiction</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Les présentes CGU/CGV sont soumises au droit français. En cas de litige, les parties s'engagent à rechercher une solution amiable avant tout recours judiciaire.</p>
+        <p>À défaut d'accord amiable, tout litige sera soumis aux juridictions françaises compétentes.</p>
+        <p>Conformément à l'article L616-1 du Code de la consommation, l'Utilisateur peut recourir gratuitement à un médiateur de la consommation. Contact Éditeur : <a href="mailto:drkpro.contact@gmail.com" class="contact-link">drkpro.contact@gmail.com</a></p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ══════════════════════════════
+       DOC 2 — CONFIDENTIALITÉ
+  ══════════════════════════════ -->
+  <div class="doc" id="doc-privacy">
+    <div class="doc-header">
+      <div class="doc-label">Document légal</div>
+      <h1 class="doc-title">Politique de Confidentialité et Protection des Données</h1>
+      <div class="doc-meta">
+        <span>Version 2.0</span>
+        <span>En vigueur depuis le 1er septembre 2026</span>
+        <span>Conforme au RGPD (UE) 2016/679</span>
+      </div>
+    </div>
+
+    <div class="notice">
+      Ce document décrit les données personnelles collectées dans le cadre de l'utilisation du Service PépiteRP, les finalités de leur traitement et les droits dont vous disposez.
+    </div>
+
+    <details class="article" open>
+      <summary>
+        <span class="article-num">ART. 1</span>
+        <span class="article-title">Responsable du traitement</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Le responsable du traitement des données personnelles est :</p>
+        <div class="highlight">
+          PépiteRP<br>
+          Contact : <a href="mailto:drkpro.contact@gmail.com" class="contact-link">drkpro.contact@gmail.com</a>
+        </div>
+        <p>Pour toute question relative à vos données personnelles, vous pouvez contacter le responsable du traitement à l'adresse ci-dessus.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 2</span>
+        <span class="article-title">Données collectées</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Dans le cadre de l'utilisation du Service, les données suivantes sont collectées :</p>
+        <ul>
+          <li><strong>Identifiants Telegram</strong> : user_id, username, prénom (fournis par la plateforme Telegram) ;</li>
+          <li><strong>Historique de conversation</strong> : messages échangés avec les personnages IA, stockés pour assurer la continuité du roleplay ;</li>
+          <li><strong>Données de transaction</strong> : montants payés, packs achetés, historique des crédits ;</li>
+          <li><strong>Données d'utilisation</strong> : date d'inscription, date de dernière activité, nombre de messages envoyés ;</li>
+          <li><strong>Identifiant client Stripe</strong> : pour la gestion des abonnements ;</li>
+          <li><strong>Messages vocaux</strong> (bot vocal uniquement) : traités automatiquement pour la génération de réponses audio, non conservés sous forme audio après traitement.</li>
+        </ul>
+        <p>Aucune donnée d'identité civile (nom, prénom légal, adresse postale) n'est collectée directement par l'Éditeur. Telegram ne transmet que les données de profil Telegram.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 3</span>
+        <span class="article-title">Finalités et base légale du traitement</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Les données sont traitées aux fins suivantes :</p>
+        <ul>
+          <li><strong>Fourniture du Service</strong> (base : exécution du contrat) — gestion du compte, des crédits, des scénarios et de l'historique de conversation ;</li>
+          <li><strong>Traitement des paiements</strong> (base : exécution du contrat) — facturation, gestion des abonnements ;</li>
+          <li><strong>Modération et sécurité</strong> (base : obligation légale + intérêt légitime) — détection de contenus illégaux, protection contre les mineurs ;</li>
+          <li><strong>Amélioration du Service</strong> (base : intérêt légitime) — analyse anonymisée des usages ;</li>
+          <li><strong>Respect des obligations légales</strong> (base : obligation légale) — conservation des données de transaction conformément au Code de commerce.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 4</span>
+        <span class="article-title">Durée de conservation</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <ul>
+          <li><strong>Historique de conversation</strong> : conservé pendant toute la durée d'activité du compte, supprimé sur demande ou en cas de clôture du compte dans un délai de 30 jours ;</li>
+          <li><strong>Données de transaction</strong> : conservées 5 ans conformément à l'article L123-22 du Code de commerce ;</li>
+          <li><strong>Données de compte</strong> : conservées jusqu'à la clôture du compte + 12 mois ;</li>
+          <li><strong>Messages vocaux transcrits</strong> : supprimés immédiatement après traitement par l'IA.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 5</span>
+        <span class="article-title">Sous-traitants et transferts</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Dans le cadre du Service, les données peuvent être transmises aux prestataires suivants :</p>
+        <ul>
+          <li><strong>Telegram Messenger</strong> (Émirats Arabes Unis / serveurs UE) — plateforme de messagerie. L'ensemble des échanges transite exclusivement par l'infrastructure de Telegram ;</li>
+          <li><strong>Stripe, Inc.</strong> (États-Unis) — traitement des paiements. Stripe est certifié PCI-DSS ;</li>
+          <li><strong>Prestataires IA tiers</strong> — technologies de génération de contenu et de synthèse vocale. Ces prestataires peuvent disposer de serveurs hors Union Européenne ; leurs traitements sont encadrés par des garanties contractuelles appropriées.</li>
+        </ul>
+        <div class="highlight">
+          <strong>Important :</strong> PépiteRP n'a accès ni au contenu de vos conversations ni à vos images. L'ensemble de vos échanges est géré et acheminé par Telegram conformément à sa propre politique de confidentialité (disponible sur telegram.org). Seules les données listées à l'Article 2 sont collectées par l'Éditeur.
+        </div>
+        <p>Aucune donnée n'est vendue à des tiers à des fins publicitaires ou commerciales.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 6</span>
+        <span class="article-title">Vos droits (RGPD)</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Conformément au RGPD, vous disposez des droits suivants sur vos données personnelles :</p>
+        <ul>
+          <li><strong>Droit d'accès</strong> : obtenir une copie de vos données ;</li>
+          <li><strong>Droit de rectification</strong> : corriger des données inexactes ;</li>
+          <li><strong>Droit à l'effacement</strong> (« droit à l'oubli ») : supprimer vos données dans les limites légales ;</li>
+          <li><strong>Droit à la portabilité</strong> : recevoir vos données dans un format structuré ;</li>
+          <li><strong>Droit d'opposition</strong> : vous opposer à certains traitements basés sur l'intérêt légitime ;</li>
+          <li><strong>Droit à la limitation</strong> : restreindre temporairement le traitement de vos données.</li>
+        </ul>
+        <p>Pour exercer ces droits, contactez : <a href="mailto:drkpro.contact@gmail.com" class="contact-link">drkpro.contact@gmail.com</a></p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 7</span>
+        <span class="article-title">Sécurité des données</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>L'Éditeur met en œuvre les mesures techniques et organisationnelles appropriées pour protéger vos données contre tout accès non autorisé, perte ou destruction :</p>
+        <ul>
+          <li>Stockage des données sur serveur sécurisé avec accès restreint ;</li>
+          <li>Aucune donnée de carte bancaire stockée par l'Éditeur (Stripe gère l'intégralité du traitement paiement) ;</li>
+          <li>Accès administrateur limité à des identifiants nominatifs ;</li>
+          <li>Journalisation des accès aux données sensibles.</li>
+        </ul>
+        <p>En cas de violation de données susceptible d'engendrer un risque pour vos droits et libertés, l'Éditeur s'engage à informer les personnes concernées dans les meilleurs délais et à prendre les mesures correctives nécessaires.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- ══════════════════════════════
+       DOC 3 — PARTENAIRES
+  ══════════════════════════════ -->
+  <div class="doc" id="doc-partner">
+    <div class="doc-header">
+      <div class="doc-label">Document légal</div>
+      <h1 class="doc-title">Conditions Générales du Programme Partenaire</h1>
+      <div class="doc-meta">
+        <span>Version 2.0</span>
+        <span>En vigueur depuis le 1er septembre 2026</span>
+        <span>Programme PépiteRP Affiliation</span>
+      </div>
+    </div>
+
+    <div class="notice">
+      Ces conditions régissent le programme d'affiliation PépiteRP permettant à des Partenaires de distribuer le Service et de percevoir une commission sur les ventes générées.
+    </div>
+
+    <details class="article" open>
+      <summary>
+        <span class="article-num">ART. 1</span>
+        <span class="article-title">Objet et accès au Programme</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Le Programme Partenaire PépiteRP (ci-après « le Programme ») permet à des tiers (ci-après « le Partenaire ») de distribuer le Service auprès de leur audience via un bot Telegram clone dédié, et de percevoir une commission sur les achats effectués par leurs utilisateurs référés.</p>
+        <p>L'accès au Programme est conditionné à :</p>
+        <ul>
+          <li>être une personne physique âgée de 18 ans ou plus ;</li>
+          <li>accepter les présentes Conditions ainsi que les CGU/CGV générales ;</li>
+          <li>disposer d'un compte Telegram actif ;</li>
+          <li>obtenir l'approbation de l'Éditeur.</li>
+        </ul>
+        <p>L'Éditeur se réserve le droit de refuser tout candidat sans obligation de motivation.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 2</span>
+        <span class="article-title">Commissions et modalités de paiement</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Le Partenaire perçoit une commission de <strong>50 % du montant hors taxes</strong> des achats en Telegram Stars effectués par les utilisateurs via son bot clone, dans le cadre du Programme d'affiliation natif de Telegram.</p>
+        <div class="highlight">
+          <strong>Mécanisme de paiement :</strong> La commission est distribuée automatiquement et instantanément par Telegram directement sur le compte Stars du Partenaire, lors de chaque transaction. L'Éditeur n'est pas intermédiaire dans ce flux financier.
+        </div>
+        <p>Le Partenaire est seul responsable de la déclaration fiscale de ses revenus de commission conformément à la législation applicable dans son pays de résidence.</p>
+        <p>Aucune commission n'est due :</p>
+        <ul>
+          <li>sur les remboursements ou chargebacks accordés à un utilisateur référé ;</li>
+          <li>sur les achats effectués en fraude ou en violation des CGU/CGV ;</li>
+          <li>si le Partenaire a lui-même violé les présentes conditions.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 3</span>
+        <span class="article-title">Obligations du Partenaire</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Le Partenaire s'engage à :</p>
+        <ul>
+          <li>n'utiliser son bot clone qu'à des fins conformes aux CGU/CGV générales du Service ;</li>
+          <li>informer clairement son audience que le service est réservé aux adultes (18+) ;</li>
+          <li>ne pas faire de fausses déclarations sur la nature, les fonctionnalités ou les prix du Service ;</li>
+          <li>ne pas faire de publicité mensongère ou comparative illicite ;</li>
+          <li>ne pas diffuser le Service auprès d'une audience incluant des mineurs ;</li>
+          <li>respecter la réglementation applicable à la publicité pour contenus pour adultes dans sa juridiction ;</li>
+          <li>ne pas utiliser le lien partenaire ou le bot clone à des fins de spam ou de communication non sollicitée.</li>
+        </ul>
+        <div class="warn-block">Le Partenaire est personnellement responsable des infractions commises via son canal de distribution. Toute violation entraîne la résiliation immédiate du Programme et peut engager sa responsabilité civile et pénale.</div>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 4</span>
+        <span class="article-title">Contenus interdits dans la distribution</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Le Partenaire s'interdit formellement de promouvoir ou distribuer le Service :</p>
+        <ul>
+          <li>auprès d'audiences incluant ou susceptibles d'inclure des mineurs ;</li>
+          <li>via des canaux, groupes ou plateformes dont les conditions d'utilisation interdisent le contenu adulte ;</li>
+          <li>en utilisant des visuels, textes ou mises en scène à caractère pédopornographique ;</li>
+          <li>en faisant des promesses de gains garantis aux utilisateurs finaux ;</li>
+          <li>en usurpant l'identité de l'Éditeur ou de tiers.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 5</span>
+        <span class="article-title">Propriété intellectuelle et marque</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>L'Éditeur concède au Partenaire, pour la durée du Programme, une licence non exclusive, non cessible et révocable d'utilisation de la marque PépiteRP et des éléments graphiques associés, aux seules fins de promotion du Service.</p>
+        <p>Le Partenaire ne peut pas :</p>
+        <ul>
+          <li>modifier la marque ou les éléments graphiques ;</li>
+          <li>déposer ou enregistrer la marque PépiteRP en son nom propre ;</li>
+          <li>utiliser la marque après résiliation du Programme.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 6</span>
+        <span class="article-title">Durée et résiliation</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Le Programme est conclu pour une durée indéterminée à compter de l'acceptation du Partenaire.</p>
+        <p><strong>Résiliation par le Partenaire</strong> : à tout moment, sans préavis, par notification à <a href="mailto:drkpro.contact@gmail.com" class="contact-link">drkpro.contact@gmail.com</a>. Les commissions acquises avant la résiliation restent dues.</p>
+        <p><strong>Résiliation par l'Éditeur</strong> : l'Éditeur peut résilier le Programme à tout moment, sans préavis ni indemnité, notamment en cas de :</p>
+        <ul>
+          <li>violation des présentes conditions ;</li>
+          <li>comportement préjudiciable à l'image du Service ;</li>
+          <li>inactivité du Partenaire pendant plus de 6 mois ;</li>
+          <li>décision de clôture du Programme.</li>
+        </ul>
+        <p>En cas de résiliation pour faute du Partenaire, les commissions non encore perçues peuvent être annulées.</p>
+      </div>
+    </details>
+
+    <details class="article">
+      <summary>
+        <span class="article-num">ART. 7</span>
+        <span class="article-title">Limitation de responsabilité et indépendance</span>
+        <span class="article-chevron">▼</span>
+      </summary>
+      <div class="article-body">
+        <p>Le Partenaire agit en qualité d'indépendant. Il n'existe aucun lien de subordination, mandat commercial ou société entre le Partenaire et l'Éditeur. Le Partenaire ne peut en aucun cas engager la responsabilité de l'Éditeur vis-à-vis des tiers.</p>
+        <p>L'Éditeur ne garantit pas un niveau de commission minimum ni la continuité du Programme. Les taux de commission peuvent être modifiés avec un préavis de 30 jours.</p>
+        <p>Le Partenaire est seul responsable de tout litige, réclamation ou action judiciaire émanant de son audience ou de tiers en lien avec sa promotion du Service.</p>
+      </div>
+    </details>
+  </div>
+
+</div>
+
+<script>
+  function showDoc(id, btn) {
+    document.querySelectorAll('.doc').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('doc-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
